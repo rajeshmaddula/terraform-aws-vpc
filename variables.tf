@@ -57,3 +57,13 @@ variable "database_route_table_tags" {
     type = map
     default = {}  
 }
+variable "eip_tags" {
+    default = {}
+    type = map
+  
+}
+variable "nate_gateway_tags" {
+    type = map 
+    default = {}
+  
+}

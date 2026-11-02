@@ -98,6 +98,7 @@ resource "aws_route_table" "database" {
 
   tags = merge(
     #roboshop-dev-database
+   
     {
         Name = "${var.project}-${var.environment}-database"
         
@@ -106,3 +107,50 @@ resource "aws_route_table" "database" {
   )
 }
 
+resource "aws_route" "public" {
+  route_table_id              = aws_route_table.public.id
+  destination_ipv6_cidr_block = "0.0.0.0/16"
+  gateway_id = aws_internet_gateway.main.id
+}
+
+resource "aws_eip" "nat" {
+  domain                    = "vpc"
+
+  tags = merge(
+    local.common_tags,
+    {
+        Name = "${var.project}-${var.environment}-nat"
+    },
+    var.eip_tags
+  )
+}
+
+resource "aws_nat_gateway" "main" {
+  allocation_id = aws_eip.nat
+  subnet_id     = aws_subnet.public[0].id
+
+  tags = merge(
+    local.common_tags,
+    {
+        Name = "${var.project}-${var.environment}"
+    },
+    var.nate_gateway_tags
+  )
+
+  # To ensure proper ordering, it is recommended to add an explicit dependency
+  # on the Internet Gateway for the VPC.
+  depends_on = [aws_internet_gateway.main]
+}
+
+resource "aws_route" "public" {
+  route_table_id              = aws_route_table.public.id
+  destination_ipv6_cidr_block = "0.0.0.0/16"
+  nat_gateway_id = aws_nat_gateway.main
+}
+
+resource "aws_route" "database" {
+  route_table_id              = aws_route_table.public.id
+  destination_ipv6_cidr_block = "0.0.0.0/16"
+  nat_gateway_id = aws_nat_gateway.main
+ 
+}
