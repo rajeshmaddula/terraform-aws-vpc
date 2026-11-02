@@ -20,10 +20,11 @@ resource "aws_subnet" "public" {
   map_public_ip_on_launch = true
 
   tags = merge(
-    local.az_names,
+
     #roboshop-dev-public-us-east-1a
     {
         Name = "${var.project}-${var.environment}-public-${local.az_names[count.index]}"
+        
     },
     var.publice_subnet_tags
   )
