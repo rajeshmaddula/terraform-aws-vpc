@@ -66,3 +66,43 @@ resource "aws_subnet" "database" {
   )
 
 }
+
+resource "aws_route_table" "public" {
+  vpc_id = aws_vpc.main.id
+
+  tags = merge(
+    #roboshop-dev-public
+    {
+        Name = "${var.project}-${var.environment}-public}"
+        
+    },
+    var.publice_subnet_tags
+  )
+}
+
+resource "aws_route_table" "private" {
+  vpc_id = aws_vpc.main.id
+
+  tags = merge(
+    #roboshop-dev-private
+    {
+        Name = "${var.project}-${var.environment}-private}"
+        
+    },
+    var.private_subnet_tags
+  )
+}
+
+resource "aws_route_table" "database" {
+  vpc_id = aws_vpc.main.id
+
+  tags = merge(
+    #roboshop-dev-database
+    {
+        Name = "${var.project}-${var.environment}-database}"
+        
+    },
+    var.database_subnet_tags
+  )
+}
+

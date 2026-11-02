@@ -43,3 +43,15 @@ variable "database_subnet_tags" {
     default = {}
   
 }
+variable "publice_route_table_tags" {
+    type = map
+  
+}
+variable "private_route_table_tags" {
+    type = map
+  
+}
+variable "database_route_table_tags" {
+    type = map
+  
+}
