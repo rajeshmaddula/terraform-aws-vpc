@@ -149,7 +149,7 @@ resource "aws_route" "public" {
 }
 
 resource "aws_route" "database" {
-  route_table_id              = aws_route_table.public.id
+  route_table_id              = aws_route_table.database.id
   destination_ipv6_cidr_block = "0.0.0.0/16"
   nat_gateway_id = aws_nat_gateway.main
  
