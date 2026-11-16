@@ -61,3 +61,19 @@ variable "database_subnet_tags" {
     default = {}
   
 }
+
+variable "public_route_table_tags" {
+    default = {}
+    type = map
+}
+
+variable "private_route_table_tags" {
+    default = {}
+    type = map
+}
+
+variable "database_route_table_tags" {
+    default = {}
+    type = map
+}
+
